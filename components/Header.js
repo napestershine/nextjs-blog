@@ -5,6 +5,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import renderHTML from 'react-render-html';
 import fetch from "isomorphic-unfetch";
 import Index from "../pages";
+import Box from "@material-ui/core/Box";
+import React from "react";
 
 
 const useStyles = makeStyles(theme => ({
@@ -24,51 +26,50 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Header = props => (
+const Header = ({categories}) => {
 
-    <AppBar position="static">
-        <Container maxWidth="lg">
-            <Toolbar className={useStyles.toolbar}>
-                <Button size="small">Subscribe</Button>
-                <Typography
-                    component="h2"
-                    variant="h5"
-                    color="inherit"
-                    align="center"
-                    noWrap
-                    className={useStyles.toolbarTitle}>
-                    GoFooddy
-                </Typography>
-                <IconButton>
-                    <SearchIcon/>
-                </IconButton>
-            </Toolbar>
-            <Toolbar component="nav" variant="dense" className={useStyles.toolbarSecondary}>
-                {props.categories && props.categories.map(category => (
-                    <Link
-                        color="inherit"
-                        noWrap
-                        key={category.id}
-                        variant="body2"
-                        href="#"
-                        className={useStyles.toolbarLink}>
-                        {renderHTML(category.name)}
+    const classes = useStyles();
+
+    return (
+        <AppBar position="static">
+            <Container maxWidth="lg">
+                <Toolbar className={classes.toolbar}>
+                    <Button size="small">Subscribe</Button>
+                    <Link href="/about" color="secondary" title="About Us">
+                        <Button size="small">About</Button>
                     </Link>
-                ))}
-            </Toolbar>
-        </Container>
-    </AppBar>
-);
-
-Header.getInitialProps = async function () {
-    const res = await fetch(`https://example.com/wp-json/wp/v2/categories?orderby=count&order=desc`);
-    const data = await res.json();
-
-    console.log(`Show categories fetched. Count: ${data.length}`);
-
-    return {
-        categories: data.map(category => category)
-    };
+                    <Link href="/contact" color="secondary" title="Contact Us">
+                        <Button size="small">Contact</Button>
+                    </Link>
+                    <Typography
+                        component="h2"
+                        variant="h5"
+                        color="inherit"
+                        align="center"
+                        noWrap
+                        className={classes.toolbarTitle}>
+                        GoFooddy
+                    </Typography>
+                    <IconButton>
+                        <SearchIcon/>
+                    </IconButton>
+                </Toolbar>
+                <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
+                    {categories && categories.map(category => (
+                        <Link
+                            color="inherit"
+                            noWrap
+                            key={category.id}
+                            variant="body2"
+                            href="#"
+                            className={classes.toolbarLink}>
+                            {renderHTML(category.name)}
+                        </Link>
+                    ))}
+                </Toolbar>
+            </Container>
+        </AppBar>
+    );
 };
 
 export default Header;
