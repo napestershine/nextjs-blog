@@ -6,6 +6,10 @@ import MuiLink from '@material-ui/core/Link';
 import Link from '../src/Link';
 import fetch from 'isomorphic-unfetch';
 import Header from "../components/Header";
+import getConfig from 'next/config';
+
+const {publicRuntimeConfig} = getConfig();
+const {API_URL} = publicRuntimeConfig;
 
 function Copyright() {
     return (
@@ -19,8 +23,6 @@ function Copyright() {
         </Typography>
     );
 }
-
-const API_URL = process.env.API_URL;
 
 const Index = props => (
     <React.Fragment>
@@ -43,11 +45,11 @@ const Index = props => (
 );
 
 Index.getInitialProps = async function () {
-    const res = await fetch(`https://example.com/wp-json/wp/v2/posts`);
+    const res = await fetch(`${API_URL}/posts`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 
-    const res2 = await fetch(`https://example.com/wp-json/wp/v2/categories?orderby=count&order=desc`);
+    const res2 = await fetch(`${API_URL}/categories?orderby=count&order=desc`);
     const data2 = await res2.json();
     console.log(`Show categories fetched. Count: ${data2.length}`);
 
