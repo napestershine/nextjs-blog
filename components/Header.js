@@ -3,9 +3,6 @@ import {Container, Button, IconButton, Typography, Toolbar, Link} from "@materia
 import {makeStyles} from "@material-ui/core/styles";
 import SearchIcon from '@material-ui/icons/Search';
 import renderHTML from 'react-render-html';
-import fetch from "isomorphic-unfetch";
-import Index from "../pages";
-import Box from "@material-ui/core/Box";
 import React from "react";
 
 
@@ -22,11 +19,12 @@ const useStyles = makeStyles(theme => ({
     },
     toolbarLink: {
         padding: theme.spacing(1),
-        flexShrink: 0
+        flexShrink: 0,
+        color: 'white'
     }
 }));
 
-const Header = ({categories}) => {
+const Header = () => {
 
     const classes = useStyles();
 
@@ -55,17 +53,64 @@ const Header = ({categories}) => {
                     </IconButton>
                 </Toolbar>
                 <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-                    {categories && categories.map(category => (
                         <Link
-                            color="inherit"
                             noWrap
-                            key={category.id}
                             variant="body2"
                             href="#"
                             className={classes.toolbarLink}>
-                            {renderHTML(category.name)}
+                            Home
                         </Link>
-                    ))}
+                    <Link
+                        color="inherit"
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Recipe
+                    </Link>
+                    <Link
+                        color="inherit"
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Dessert
+                    </Link>
+                    <Link
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Snacks
+                    </Link>
+                    <Link
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Drinks
+                    </Link>
+                    <Link
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Kitchen Tips
+                    </Link>
+                    <Link
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Submit Recipe
+                    </Link>
+                    <Link
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Your Saved Recipes
+                    </Link>
                 </Toolbar>
             </Container>
         </AppBar>

@@ -1,12 +1,13 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import {Card, CardContent, CardMedia, Container, Grid, Hidden, Paper, Typography} from '@material-ui/core';
 import MuiLink from '@material-ui/core/Link';
 import Link from '../src/Link';
 import fetch from 'isomorphic-unfetch';
 import Header from "../components/Header";
 import getConfig from 'next/config';
+import Moment from 'react-moment';
+import renderHTML from 'react-render-html';
+import {Facebook, Instagram, Pinterest, Twitter} from '@material-ui/icons';
 
 const {publicRuntimeConfig} = getConfig();
 const {API_URL} = publicRuntimeConfig;
@@ -27,30 +28,83 @@ function Copyright() {
 const Index = props => (
     <React.Fragment>
         <Header categories={props.categories}/>
-        <Container maxWidth="sm">
-            <Box my={4}>
-                <ul>
-                    {props.posts.map(post => (
-                        <li key={post.id}>
-                            <Link href="/p/[id]" as={`/p/${post.slug}`}>
-                                {post.title.rendered}
+        <Container>
+            <main style={{marginTop: 20}}>
+                <Grid container spacing={5}>
+                    {/* Main content */}
+                    <Grid item xs={12} md={8}>
+                        {props.posts.map(post => (
+                            <Grid item key={post.id}>
+                                <Card>
+                                    <Hidden xsDown>
+                                        <CardMedia style={{height: 0, paddingTop: '56.25%'}}
+                                                   image={post.jetpack_featured_media_url} title={post.title.rendered}
+                                                   alt={post.title.rendred}/>
+                                    </Hidden>
+                                    <div>
+                                        <CardContent>
+                                            <Typography component="h2" variant="h5">
+                                                {post.title.rendered}
+                                            </Typography>
+                                            <Typography variant="subtitle1" color="textSecondary">
+                                                <Moment fromNow>{post.date}</Moment>
+                                            </Typography>
+                                            <Typography variant="subtitle1" paragraph>
+                                                {post.content.rendered.length > 300 ? renderHTML(`${post.content.rendered.substr(0, 300)}...`) : renderHTML(post.content.rendered)}
+                                            </Typography>
+                                            <Link href={`/post/${post.id}`}>
+                                                <Typography variant="subtitle1" color="primary">
+                                                    Continue reading ...
+                                                </Typography>
+                                            </Link>
+                                        </CardContent>
+                                    </div>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                    {/* End main content */}
+                    {/* Sidebar */}
+                    <Grid item xs={12} md={4}>
+                        <Typography variant="h6" gutterBottom>
+                            Follow us
+                        </Typography>
+                        <Link href="https://www.facebook.com/gofooddy">
+                            <Facebook/>
+                        </Link>
+                        <Link href="https://www.instagram.com/gofooddy">
+                            <Instagram/>
+                        </Link>
+                        <Link href="https://twitter.com/gofooddy">
+                            <Twitter />
+                        </Link>
+                        <Link href="https://www.pinterest.com/gofooddy">
+                            <Pinterest />
+                        </Link>
+                        <Typography variant="h6" gutterBottom>
+                            Categories
+                        </Typography>
+                        {props.categories.map(category => (
+                            <Link display="block" variant="body1" href="#" key={category.slug}>
+                                {category.name} ({category.count})
                             </Link>
-                        </li>
-                    ))}
-                </ul>
-                <Copyright/>
-            </Box>
+                        ))}
+
+                    </Grid>
+                    {/* End sidebar */}
+                </Grid>
+            </main>
         </Container>
+        <Copyright/>
     </React.Fragment>
 );
 
 Index.getInitialProps = async function () {
-    console.log(`${API_URL}`);
     const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 
-    const res2 = await fetch(`https://gofooddy.com/wp-json/wp/v2/categories?orderby=count&order=desc`);
+    const res2 = await fetch(`https://gofooddy.com/wp-json/wp/v2/categories?orderby=count&order=desc&per_page=50`);
     const data2 = await res2.json();
     console.log(`Show categories fetched. Count: ${data2.length}`);
 
