@@ -45,11 +45,12 @@ const Index = props => (
 );
 
 Index.getInitialProps = async function () {
-    const res = await fetch(`${API_URL}/posts`);
+    console.log(`${API_URL}`);
+    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 
-    const res2 = await fetch(`${API_URL}/categories?orderby=count&order=desc`);
+    const res2 = await fetch(`https://gofooddy.com/wp-json/wp/v2/categories?orderby=count&order=desc`);
     const data2 = await res2.json();
     console.log(`Show categories fetched. Count: ${data2.length}`);
 
