@@ -1,5 +1,10 @@
 import Header from "./Header";
 import Head from "next/head";
+import NProgress from 'nprogress';
+
+Router.onRouteChangeStart = () => NProgress.start();
+Router.onRouteChangeComplete = () => NProgress.done();
+Router.onRouteChangeError = () => NProgress.done();
 
 const layoutStyle = {
     margin: 20,

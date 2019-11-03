@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardContent, CardMedia, Container, Grid, Hidden, Paper, Typography} from '@material-ui/core';
+import {Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Paper, Typography} from '@material-ui/core';
 import MuiLink from '@material-ui/core/Link';
 import Link from '../src/Link';
 import fetch from 'isomorphic-unfetch';
@@ -76,20 +76,22 @@ const Index = props => (
                             <Instagram/>
                         </Link>
                         <Link href="https://twitter.com/gofooddy">
-                            <Twitter />
+                            <Twitter/>
                         </Link>
                         <Link href="https://www.pinterest.com/gofooddy">
-                            <Pinterest />
+                            <Pinterest/>
                         </Link>
+                        <Divider />
                         <Typography variant="h6" gutterBottom>
                             Categories
                         </Typography>
                         {props.categories.map(category => (
-                            <Link display="block" variant="body1" href="#" key={category.slug}>
-                                {category.name} ({category.count})
-                            </Link>
-                        ))}
+                            category.count > 0 ?
+                                <Link display="block" variant="body1" href="#" key={category.slug}>
+                                    {category.name} ({category.count})
+                                </Link> : null
 
+                        ))}
                     </Grid>
                     {/* End sidebar */}
                 </Grid>
@@ -104,7 +106,7 @@ Index.getInitialProps = async function () {
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 
-    const res2 = await fetch(`https://gofooddy.com/wp-json/wp/v2/categories?orderby=count&order=desc&per_page=50`);
+    const res2 = await fetch(`https://gofooddy.com/wp-json/wp/v2/categories?orderby=count&order=desc&per_page=100`);
     const data2 = await res2.json();
     console.log(`Show categories fetched. Count: ${data2.length}`);
 
