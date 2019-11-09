@@ -1,5 +1,6 @@
 import Header from "./Header";
 import Head from "next/head";
+import Router from 'next/router';
 import NProgress from 'nprogress';
 
 Router.onRouteChangeStart = () => NProgress.start();

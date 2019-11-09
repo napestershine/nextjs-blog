@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Paper, Typography} from '@material-ui/core';
+import {Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Typography} from '@material-ui/core';
 import MuiLink from '@material-ui/core/Link';
 import Link from '../src/Link';
 import fetch from 'isomorphic-unfetch';
@@ -8,6 +8,7 @@ import getConfig from 'next/config';
 import Moment from 'react-moment';
 import renderHTML from 'react-render-html';
 import {Facebook, Instagram, Pinterest, Twitter} from '@material-ui/icons';
+import Router from 'next/router';
 
 const {publicRuntimeConfig} = getConfig();
 const {API_URL} = publicRuntimeConfig;
@@ -44,17 +45,21 @@ const Index = props => (
                                     <div>
                                         <CardContent>
                                             <Typography component="h2" variant="h5">
-                                                {post.title.rendered}
+                                                {renderHTML(post.title.rendered)}
                                             </Typography>
                                             <Typography variant="subtitle1" color="textSecondary">
                                                 <Moment fromNow>{post.date}</Moment>
+                                                &nbsp;by&nbsp;
+                                                <Link href={`/author/${post._embedded.author[0].slug}`}>
+                                                    {post._embedded.author[0].name}
+                                                </Link>
                                             </Typography>
                                             <Typography variant="subtitle1" paragraph>
-                                                {post.content.rendered.length > 300 ? renderHTML(`${post.content.rendered.substr(0, 300)}...`) : renderHTML(post.content.rendered)}
+                                                {post.excerpt.rendered.length > 300 ? renderHTML(`${post.excerpt.rendered.substr(0, 300)}...`) : renderHTML(post.excerpt.rendered)}
                                             </Typography>
                                             <Link href={`/post/${post.id}`}>
-                                                <Typography variant="subtitle1" color="primary">
-                                                    Continue reading ...
+                                                <Typography variant="button" color="primary">
+                                                    Read More ...
                                                 </Typography>
                                             </Link>
                                         </CardContent>
@@ -62,6 +67,11 @@ const Index = props => (
                                 </Card>
                             </Grid>
                         ))}
+                        <button
+                            onClick={() => Router.push(`/?page=${props.page - 1}`)}
+                            disabled={props.page <= 1}>Previous Posts
+                        </button>
+                        <button onClick={() => Router.push(`/?page=${props.page + 1}`)}>Next Posts</button>
                     </Grid>
                     {/* End main content */}
                     {/* Sidebar */}
@@ -81,7 +91,7 @@ const Index = props => (
                         <Link href="https://www.pinterest.com/gofooddy">
                             <Pinterest/>
                         </Link>
-                        <Divider />
+                        <Divider/>
                         <Typography variant="h6" gutterBottom>
                             Categories
                         </Typography>
@@ -101,8 +111,8 @@ const Index = props => (
     </React.Fragment>
 );
 
-Index.getInitialProps = async function () {
-    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts`);
+Index.getInitialProps = async function ({query: {page = 1}}) {
+    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&page=${page}`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 
@@ -112,6 +122,7 @@ Index.getInitialProps = async function () {
 
     return {
         posts: data.map(post => post),
+        page: parseInt(page, 10),
         categories: data2.map(category => category)
     };
 };
