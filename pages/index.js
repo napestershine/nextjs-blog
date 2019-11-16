@@ -118,7 +118,7 @@ const Index = props => (
                         </Typography>
                         {props.categories.map(category => (
                             category.count > 0 ?
-                                <Link display="block" variant="body1" href="#" key={category.slug}>
+                                <Link display="block" variant="body1" href={`/category/${category.id}`} key={category.slug} as={`/category/${category.slug}`}>
                                     {category.name} ({category.count})
                                 </Link> : null
 
