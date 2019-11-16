@@ -73,9 +73,9 @@ const Index = props => (
                                 Router.push({
                                     pathname: '/',
                                     query: {
-                                        page: `${props.page + 1}`
+                                        page: `${props.page - 1}`
                                     }
-                                }, `/page/${props.page + 1}`);
+                                }, `/page/${props.page - 1}`);
 
                             }}
                             disabled={props.page <= 1}>
