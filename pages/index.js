@@ -69,13 +69,15 @@ const Index = props => (
                         ))}
                         <button
                             onClick={() => {
+                                const { page } = props;
+                                const actualPage = parseInt(page) - 1;
 
                                 Router.push({
                                     pathname: '/',
                                     query: {
-                                        page: `${props.page + 1}`
+                                        page: `${props.page - 1}`
                                     }
-                                }, `/page/${props.page + 1}`);
+                                },  actualPage === 1 ?  `/` : `/page/${props.page - 1}`);
 
                             }}
                             disabled={props.page <= 1}>
