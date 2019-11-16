@@ -46,7 +46,7 @@ const Header = () => {
                         align="center"
                         noWrap
                         className={classes.toolbarTitle}>
-                        GoFooddy
+                        <Link href="/" color="textPrimary" title="GoFooddy">GoFooddy</Link>
                     </Typography>
                     <IconButton>
                         <SearchIcon/>
@@ -64,7 +64,7 @@ const Header = () => {
                         color="inherit"
                         noWrap
                         variant="body2"
-                        href="#"
+                        href="/category/recipe"
                         className={classes.toolbarLink}>
                         Recipe
                     </Link>
@@ -72,14 +72,14 @@ const Header = () => {
                         color="inherit"
                         noWrap
                         variant="body2"
-                        href="#"
+                        href="/category/dessert"
                         className={classes.toolbarLink}>
                         Dessert
                     </Link>
                     <Link
                         noWrap
                         variant="body2"
-                        href="#"
+                        href="/category/snacks"
                         className={classes.toolbarLink}>
                         Snacks
                     </Link>
