@@ -68,10 +68,31 @@ const Index = props => (
                             </Grid>
                         ))}
                         <button
-                            onClick={() => Router.push(`/?page=${props.page - 1}`)}
-                            disabled={props.page <= 1}>Previous Posts
+                            onClick={() => {
+
+                                Router.push({
+                                    pathname: '/',
+                                    query: {
+                                        page: `${props.page - 1}`
+                                    }
+                                }, `/page/${props.page - 1}`);
+
+                            }}
+                            disabled={props.page <= 1}>
+                                Previous Posts
                         </button>
-                        <button onClick={() => Router.push(`/?page=${props.page + 1}`)}>Next Posts</button>
+                        <button onClick={() => {
+
+                             Router.push({
+                                pathname: '/',
+                                query: {
+                                    page: `${props.page + 1}`
+                                }
+                            }, `/page/${props.page + 1}`);
+
+                        }}>
+                            Next Posts
+                        </button>
                     </Grid>
                     {/* End main content */}
                     {/* Sidebar */}
