@@ -9,10 +9,11 @@ import {Facebook, Instagram, Pinterest, Twitter} from "@material-ui/icons";
 import fetch from "isomorphic-unfetch";
 import MuiLink from "@material-ui/core/Link/Link";
 import Footer from "../../components/Footer";
+import SocialMediaLinks from "../../components/SocialMediaLinks";
 
 const CategoryPosts = props => (
     <React.Fragment>
-        <Header categories={props.categories}/>
+        <Header/>
         <Container>
             <main style={{marginTop: 20}}>
                 <Grid container spacing={5}>
@@ -38,7 +39,7 @@ const CategoryPosts = props => (
                                                     {post._embedded.author[0].name}
                                                 </Link>
                                             </Typography>
-                                            <Typography variant="subtitle1" paragraph>
+                                            <Typography variant="subtitle1">
                                                 {post.excerpt.rendered.length > 300 ? renderHTML(`${post.excerpt.rendered.substr(0, 300)}...`) : renderHTML(post.excerpt.rendered)}
                                             </Typography>
                                             <Link href={`/post/${post.id}`}>
@@ -81,22 +82,7 @@ const CategoryPosts = props => (
                     {/* End main content */}
                     {/* Sidebar */}
                     <Grid item xs={12} md={4}>
-                        <Typography variant="h6" gutterBottom>
-                            Follow us
-                        </Typography>
-                        <Link href="https://www.facebook.com/gofooddy">
-                            <Facebook/>
-                        </Link>
-                        <Link href="https://www.instagram.com/gofooddy">
-                            <Instagram/>
-                        </Link>
-                        <Link href="https://twitter.com/gofooddy">
-                            <Twitter/>
-                        </Link>
-                        <Link href="https://www.pinterest.com/gofooddy">
-                            <Pinterest/>
-                        </Link>
-                        <Divider/>
+                        <SocialMediaLinks/>
                         <Typography variant="h6" gutterBottom>
                             Categories
                         </Typography>
@@ -116,8 +102,9 @@ const CategoryPosts = props => (
     </React.Fragment>
 );
 
-CategoryPosts.getInitialProps = async function ({id, query: {page = 1}}) {
-    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&categories=${id}`);
+CategoryPosts.getInitialProps = async function ({query: {id, page = 1}}) {
+    //console.log(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&categories=509&page=${page}`);
+    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&categories=509&page=${page}`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 

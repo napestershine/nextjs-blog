@@ -1,21 +1,17 @@
 import React from 'react';
-import {Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Typography} from '@material-ui/core';
+import {Card, CardContent, CardMedia, Container, Grid, Hidden, Typography} from '@material-ui/core';
 import Link from '../src/Link';
 import fetch from 'isomorphic-unfetch';
 import Header from "../components/Header";
-import getConfig from 'next/config';
 import Moment from 'react-moment';
 import renderHTML from 'react-render-html';
-import {Facebook, Instagram, Pinterest, Twitter} from '@material-ui/icons';
 import Router from 'next/router';
 import Footer from '../components/Footer';
-
-const {publicRuntimeConfig} = getConfig();
-const {API_URL} = publicRuntimeConfig;
+import SocialMediaLinks from "../components/SocialMediaLinks";
 
 const Index = props => (
     <React.Fragment>
-        <Header categories={props.categories}/>
+        <Header/>
         <Container>
             <main style={{marginTop: 20}}>
                 <Grid container spacing={5}>
@@ -41,7 +37,7 @@ const Index = props => (
                                                     {post._embedded.author[0].name}
                                                 </Link>
                                             </Typography>
-                                            <Typography variant="subtitle1" paragraph>
+                                            <Typography variant="subtitle1">
                                                 {post.excerpt.rendered.length > 300 ? renderHTML(`${post.excerpt.rendered.substr(0, 300)}...`) : renderHTML(post.excerpt.rendered)}
                                             </Typography>
                                             <Link href={`/post/${post.id}`}>
@@ -56,7 +52,7 @@ const Index = props => (
                         ))}
                         <button
                             onClick={() => {
-                                const { page } = props;
+                                const {page} = props;
                                 const actualPage = parseInt(page) - 1;
 
                                 Router.push({
@@ -64,15 +60,15 @@ const Index = props => (
                                     query: {
                                         page: `${props.page - 1}`
                                     }
-                                },  actualPage === 1 ?  `/` : `/page/${props.page - 1}`);
+                                }, actualPage === 1 ? `/` : `/page/${props.page - 1}`);
 
                             }}
                             disabled={props.page <= 1}>
-                                Previous Posts
+                            Previous Posts
                         </button>
                         <button onClick={() => {
 
-                             Router.push({
+                            Router.push({
                                 pathname: '/',
                                 query: {
                                     page: `${props.page + 1}`
@@ -86,28 +82,14 @@ const Index = props => (
                     {/* End main content */}
                     {/* Sidebar */}
                     <Grid item xs={12} md={4}>
-                        <Typography variant="h6" gutterBottom>
-                            Follow us
-                        </Typography>
-                        <Link href="https://www.facebook.com/gofooddy">
-                            <Facebook/>
-                        </Link>
-                        <Link href="https://www.instagram.com/gofooddy">
-                            <Instagram/>
-                        </Link>
-                        <Link href="https://twitter.com/gofooddy">
-                            <Twitter/>
-                        </Link>
-                        <Link href="https://www.pinterest.com/gofooddy">
-                            <Pinterest/>
-                        </Link>
-                        <Divider/>
+                        <SocialMediaLinks/>
                         <Typography variant="h6" gutterBottom>
                             Categories
                         </Typography>
                         {props.categories.map(category => (
                             category.count > 0 ?
-                                <Link display="block" variant="body1" href={`/category/${category.id}`} key={category.slug} as={`/category/${category.slug}`}>
+                                <Link display="block" variant="body1" href={`/category/${category.id}`}
+                                      key={category.slug} as={`/category/${category.slug}`}>
                                     {category.name} ({category.count})
                                 </Link> : null
 

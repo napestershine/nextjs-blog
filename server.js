@@ -19,7 +19,7 @@ app
       app.render(req, res, '/', {
         page: pageName
       })
-    }
+    };
 
     server.get('/page/:page', (req, res) => {
       // this is a url, a direct request
@@ -31,11 +31,11 @@ app
       return app.render(req, res, '/', query);
   });
 
-  server.get('/category/:slug', (req, res) => {
+  server.get('/category/:id', (req, res) => {
      // this is a url, a direct request
-     const { slug } = req.params;
+     const { id } = req.params;
      const query = Object.assign({
-         slug
+         id
      }, req.query);
 
      return app.render(req, res, '/category/posts', query);

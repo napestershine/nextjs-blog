@@ -52,13 +52,13 @@ const Header = () => {
                     </IconButton>
                 </Toolbar>
                 <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
-                        <Link
-                            noWrap
-                            variant="body2"
-                            href="#"
-                            className={classes.toolbarLink}>
-                            Home
-                        </Link>
+                    <Link
+                        noWrap
+                        variant="body2"
+                        href="#"
+                        className={classes.toolbarLink}>
+                        Home
+                    </Link>
                     <Link
                         color="inherit"
                         noWrap
