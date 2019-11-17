@@ -2,7 +2,6 @@ import AppBar from '@material-ui/core/AppBar';
 import {Container, Button, IconButton, Typography, Toolbar, Link} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import SearchIcon from '@material-ui/icons/Search';
-import renderHTML from 'react-render-html';
 import React from "react";
 
 

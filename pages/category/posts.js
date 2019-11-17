@@ -8,20 +8,7 @@ import Router from "next/router";
 import {Facebook, Instagram, Pinterest, Twitter} from "@material-ui/icons";
 import fetch from "isomorphic-unfetch";
 import MuiLink from "@material-ui/core/Link/Link";
-
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <MuiLink color="inherit" href="https://material-ui.com/">
-                Your Website
-            </MuiLink>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Footer from "../../components/Footer";
 
 const CategoryPosts = props => (
     <React.Fragment>
@@ -125,12 +112,12 @@ const CategoryPosts = props => (
                 </Grid>
             </main>
         </Container>
-        <Copyright/>
+        <Footer/>
     </React.Fragment>
 );
 
 CategoryPosts.getInitialProps = async function ({id, query: {page = 1}}) {
-    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&page=${page}&categories=${id}`);
+    const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&categories=${id}`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 

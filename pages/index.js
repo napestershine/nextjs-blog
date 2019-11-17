@@ -1,6 +1,5 @@
 import React from 'react';
 import {Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Typography} from '@material-ui/core';
-import MuiLink from '@material-ui/core/Link';
 import Link from '../src/Link';
 import fetch from 'isomorphic-unfetch';
 import Header from "../components/Header";
@@ -9,22 +8,10 @@ import Moment from 'react-moment';
 import renderHTML from 'react-render-html';
 import {Facebook, Instagram, Pinterest, Twitter} from '@material-ui/icons';
 import Router from 'next/router';
+import Footer from '../components/Footer';
 
 const {publicRuntimeConfig} = getConfig();
 const {API_URL} = publicRuntimeConfig;
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <MuiLink color="inherit" href="https://material-ui.com/">
-                Your Website
-            </MuiLink>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const Index = props => (
     <React.Fragment>
@@ -130,7 +117,7 @@ const Index = props => (
                 </Grid>
             </main>
         </Container>
-        <Copyright/>
+        <Footer/>
     </React.Fragment>
 );
 

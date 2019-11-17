@@ -22,14 +22,36 @@ app
     }
 
     server.get('/page/:page', (req, res) => {
-        // this is a url, a direct request
-        const { page } = req.params;
-        const query = Object.assign({
-            page
-        }, req.query);
+      // this is a url, a direct request
+      const { page } = req.params;
+      const query = Object.assign({
+          page
+      }, req.query);
 
-        return app.render(req, res, '/', query);
+      return app.render(req, res, '/', query);
+  });
+
+  server.get('/category/:slug', (req, res) => {
+     // this is a url, a direct request
+     const { slug } = req.params;
+     const query = Object.assign({
+         slug
+     }, req.query);
+
+     return app.render(req, res, '/category/posts', query);
+  });
+
+    server.get('/category/:slug/page/:page', (req, res) => {
+      // this is a url, a direct request
+     const { slug } = req.params;
+     const query = Object.assign({
+         slug
+     }, req.query);
+
+     return app.render(req, res, '/category/posts', query);
     });
+
+ 
 
     server.get("*", (req, res, err) => {
       return handle(req, res);
