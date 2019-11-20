@@ -1,21 +1,22 @@
 import React from "react";
 import Header from "../../components/Header";
-import {Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Typography} from "@material-ui/core";
+import { Card, CardContent, CardMedia, Container, Divider, Grid, Hidden, Typography } from "@material-ui/core";
 import renderHTML from "react-render-html";
 import Moment from "react-moment";
 import Link from "../../src/Link";
 import Router from "next/router";
-import {Facebook, Instagram, Pinterest, Twitter} from "@material-ui/icons";
 import fetch from "isomorphic-unfetch";
-import MuiLink from "@material-ui/core/Link/Link";
 import Footer from "../../components/Footer";
-import SocialMediaLinks from "../../components/SocialMediaLinks";
+import useSidebar from '../../components/Hooks/sidebar'
 
-const CategoryPosts = props => (
-    <React.Fragment>
-        <Header/>
+const CategoryPosts = props => {
+    const { categories = [] } = props
+    const sidebarHook = useSidebar(categories);
+
+    return <React.Fragment>
+        <Header />
         <Container>
-            <main style={{marginTop: 20}}>
+            <main style={{ marginTop: 20 }}>
                 <Grid container spacing={5}>
                     {/* Main content */}
                     <Grid item xs={12} md={8}>
@@ -23,9 +24,9 @@ const CategoryPosts = props => (
                             <Grid item key={post.id}>
                                 <Card>
                                     <Hidden xsDown>
-                                        <CardMedia style={{height: 0, paddingTop: '56.25%'}}
-                                                   image={post.jetpack_featured_media_url} title={post.title.rendered}
-                                                   alt={post.title.rendred}/>
+                                        <CardMedia style={{ height: 0, paddingTop: '56.25%' }}
+                                            image={post.jetpack_featured_media_url} title={post.title.rendered}
+                                            alt={post.title.rendred} />
                                     </Hidden>
                                     <div>
                                         <CardContent>
@@ -35,7 +36,7 @@ const CategoryPosts = props => (
                                             <Typography variant="subtitle1" color="textSecondary">
                                                 <Moment fromNow>{post.date}</Moment>
                                                 &nbsp;by&nbsp;
-                                                <Link href={`/author/${post._embedded.author[0].slug}`}>
+                                            <Link href={`/author/${post._embedded.author[0].slug}`}>
                                                     {post._embedded.author[0].name}
                                                 </Link>
                                             </Typography>
@@ -45,7 +46,7 @@ const CategoryPosts = props => (
                                             <Link href={`/post/${post.id}`}>
                                                 <Typography variant="button" color="primary">
                                                     Read More ...
-                                                </Typography>
+                                            </Typography>
                                             </Link>
                                         </CardContent>
                                     </div>
@@ -65,7 +66,7 @@ const CategoryPosts = props => (
                             }}
                             disabled={props.page <= 1}>
                             Previous Posts
-                        </button>
+                    </button>
                         <button onClick={() => {
 
                             Router.push({
@@ -77,45 +78,29 @@ const CategoryPosts = props => (
 
                         }}>
                             Next Posts
-                        </button>
+                    </button>
                     </Grid>
-                    {/* End main content */}
-                    {/* Sidebar */}
-                    <Grid item xs={12} md={4}>
-                        <SocialMediaLinks/>
-                        <Typography variant="h6" gutterBottom>
-                            Categories
-                        </Typography>
-                        {props.categories.map(category => (
-                            category.count > 0 ?
-                                <Link display="block" variant="body1" href="#" key={category.slug}>
-                                    {category.name} ({category.count})
-                                </Link> : null
-
-                        ))}
-                    </Grid>
-                    {/* End sidebar */}
+                    {
+                        sidebarHook
+                    }
                 </Grid>
             </main>
         </Container>
-        <Footer/>
+        <Footer />
     </React.Fragment>
-);
+}
 
-CategoryPosts.getInitialProps = async function ({query: {id, page = 1}}) {
+
+CategoryPosts.getInitialProps = async function ({ query: { id, page = 1 } }) {
     //console.log(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&categories=509&page=${page}`);
     const res = await fetch(`https://gofooddy.com/wp-json/wp/v2/posts?_embed&categories=509&page=${page}`);
     const data = await res.json();
     console.log(`Show posts fetched. Count: ${data.length}`);
 
-    const res2 = await fetch(`https://gofooddy.com/wp-json/wp/v2/categories?orderby=count&order=desc&per_page=100`);
-    const data2 = await res2.json();
-    console.log(`Show categories fetched. Count: ${data2.length}`);
-
     return {
         posts: data.map(post => post),
-        page: parseInt(page, 10),
-        categories: data2.map(category => category)
+        page: parseInt(page, 10)
+        // categories: data2.map(category => category)
     };
 };
 
